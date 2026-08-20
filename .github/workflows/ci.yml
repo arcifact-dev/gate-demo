@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps: [{run: echo linting}]
+
+  unit:
+    runs-on: ubuntu-latest
+    steps: [{run: echo unit tests}]
+
+  integration:
+    runs-on: ubuntu-latest
+    steps: [{run: echo integration tests}]
+
+  windows-build:
+    runs-on: ubuntu-latest
+    steps: [{run: echo building for windows}]
+
+  windows-tests:
+    needs: [windows-build]
+    runs-on: ubuntu-latest
+    steps: [{run: echo windows tests}]
+
+  # The aggregate. This is the job a ruleset would require, and the
+  # shape is taken from real repositories rather than invented.
+  tests-pass:
+    name: all tests passed
+    needs: [lint, unit, integration, windows-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: check every dependency
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" ]]; then exit 1; fi
+          if [[ "${{ needs.unit.result }}" != "success" ]]; then exit 1; fi
+          if [[ "${{ needs.integration.result }}" != "success" ]]; then exit 1; fi
+          if [[ "${{ needs.windows-tests.result }}" != "success" ]]; then exit 1; fi
+          echo "all four dependencies succeeded"
