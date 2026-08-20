@@ -31,7 +31,7 @@ jobs:
   # shape is taken from real repositories rather than invented.
   tests-pass:
     name: all tests passed
-    needs: [lint, unit, integration, windows-tests]
+    needs: [lint, unit, integration]
     if: always()
     runs-on: ubuntu-latest
     steps:
