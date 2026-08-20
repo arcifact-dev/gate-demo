@@ -1,0 +1,15 @@
+# WARRANT
+# What this repository's required checks are intended to establish.
+# Verified continuously against what they actually establish.
+#
+# This is a claim by the maintainers, not by any tool.
+
+declared_at: 220beb4bfeb9d6c5d4a5a20d6b4536f87edba34a
+
+checks:
+  "all tests passed":
+    must_cover: [lint, unit, integration, windows-tests]
+    must_prove: success
+    note: >
+      A green result here should mean all four suites ran and passed,
+      including Windows. If that stops being true we want to know.
