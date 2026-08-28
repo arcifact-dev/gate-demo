@@ -27,18 +27,25 @@ required check now proves less than it did an hour ago.
 
 ## The three scenarios
 
-| | what the pull request does | GitHub says | Gate says |
+| | what the pull request does | required check says | Gate says |
 |---|---|---|---|
 | [#1](https://github.com/arcifact-dev/gate-demo/pull/1) | drops `windows-tests` from the aggregate, framed as a CI speed-up | `all tests passed` **success** | **approved warrant broken** |
 | [#2](https://github.com/arcifact-dev/gate-demo/pull/2) | narrows the aggregate to `pull_request` only | `all tests passed` **success** | **weakened by this change** |
-| [#3](https://github.com/arcifact-dev/gate-demo/pull/3) | drops the job without the speed-up framing | `all tests passed` **failure** | the honest case |
+| [#3](https://github.com/arcifact-dev/gate-demo/pull/3) | the same drop as #1, and its own CI fails for an unrelated reason | `all tests passed` **failure** | **also a reduction** |
 
-**#1 and #2 are the interesting ones.** The platform reports success and
-the change is still a reduction in what merging establishes.
+**#1 and #2 are the point.** The required check reports success and the
+change still reduces what merging establishes. That is the gap this tool
+exists to close, and nothing in the platform reports it.
 
-#3 is included because a demonstration that only shows the tool winning
-is a demonstration nobody should trust. When the workflow genuinely
-breaks, the platform catches it and Gate has nothing to add.
+**#3 is honest about a limit rather than a win.** It makes the same
+change as #1, so Gate reports the same reduction. What differs is that
+its own CI happens to fail, so the platform blocks the merge anyway. Gate
+adds nothing you would not already have known from the red check.
+
+An earlier version of this table described #3 as a case where Gate has
+nothing to say. That was wrong: Gate says the same thing about #3 as
+about #1, because it is the same change. The corrected claim is narrower
+and it is the true one.
 
 ---
 
