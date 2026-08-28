@@ -32,7 +32,7 @@ jobs:
   tests-pass:
     name: all tests passed
     needs: [lint, unit, integration, windows-tests]
-    if: always()
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: check every dependency
