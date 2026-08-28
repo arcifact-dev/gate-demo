@@ -1,0 +1,36 @@
+# Check that this repository's own README is true.
+#
+# An external reviewer found the scenario table contradicting the live
+# repository: it named a workflow state that had changed, described a
+# pull request as a case where Gate has nothing to say when Gate says
+# the same thing about it as about another, and two of the three
+# scenarios were analysed by a development App a visitor cannot install.
+#
+# A demonstration nobody verifies is a story.
+name: verify the demonstration
+
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "README.md"
+      - "expected.json"
+      - "verify.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: every claim in expected.json holds against this repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 verify.py

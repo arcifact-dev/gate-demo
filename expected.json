@@ -1,0 +1,38 @@
+{
+ "schema": "arcifact-demo-expected/1",
+ "why": "the README describes live pull requests, and a description that is not checked against them drifts. An external reviewer found this table contradicting its own repository: it named a workflow state that had changed, and called #3 a case where Gate has nothing to say when Gate says the same thing about it as about #1.",
+ "required_context": "all tests passed",
+ "ruleset": {
+  "name": "Require all tests passed",
+  "must_be": "active",
+  "why": "without it the demonstration shows a check that blocks nothing, which is the opposite of the point"
+ },
+ "app": {
+  "slug": "arcifact-gate",
+  "why": "every scenario must be analysed by the PRODUCTION App. Two of these were analysed by arcifact-gate-dev, so the demonstration showed output no visitor could reproduce."
+ },
+ "pulls": [
+  {
+   "number": 1,
+   "change": "drops windows-tests from the aggregate",
+   "required_check": "success",
+   "gate": "failure",
+   "why_it_matters": "the required check passes and the change is a reduction. This is the gap."
+  },
+  {
+   "number": 2,
+   "change": "narrows the aggregate to pull_request only",
+   "required_check": "success",
+   "gate": "failure",
+   "why_it_matters": "same shape, different mechanism"
+  },
+  {
+   "number": 3,
+   "change": "the same drop as #1, with its own CI failing for an unrelated reason",
+   "required_check": "failure",
+   "gate": "failure",
+   "why_it_matters": "Gate reports the same reduction as #1. The platform blocks this one anyway, so Gate adds nothing you would not already know. Included because a demonstration that only shows the tool winning is one nobody should trust."
+  }
+ ],
+ "what_this_file_is_for": "verify.py checks every claim here against the live repository. If the README and the repository disagree, that is a failure rather than a documentation chore."
+}
